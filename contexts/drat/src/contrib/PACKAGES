@@ -1,0 +1,21 @@
+Package: cascade
+Version: 1.0
+Depends: R (>= 3.2.3)
+Imports: deSolve
+Suggests: testthat
+License: GPL-2
+MD5sum: 15c4c0b7ad05377cefa7e7a22e7035be
+NeedsCompilation: yes
+
+Package: CascadeDashboard
+Version: 1.0
+Depends: R (>= 3.2.4)
+Imports: abind, cascade, deSolve, dplyr, DT, FME, ggplot2, ggrepel,
+        googlesheets, grid, gridExtra, leaflet, RColorBrewer, readr,
+        reshape2, rhandsontable, rmarkdown, scales, shiny, shinyBS,
+        shinyjs, shinythemes, showtext, V8
+Suggests: rgdal, testthat
+License: GPL-2
+MD5sum: befd450ef880af868343146af756ac19
+NeedsCompilation: no
+
