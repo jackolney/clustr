@@ -1,99 +1,70 @@
 # dide-tools didewin setup
-# trial with CascadeDashboard
 
-setwd("~/git/clustr")
+## setup definition
+# function sets up everything automatically
+setup <- function(cwd = "~/git/clustr",
+                  remotewd = "/Volumes/jjo11/clustr",
+                  cluster = "fi--didemrchnb",
+                  log = TRUE) {
 
-devtools::install_github(
-    c(
-        "richfitz/ids",
-        "dide-tools/context",
-        "richfitz/queuer",
-        "dide-tools/didewin"
+    # define a working directory
+    setwd(cwd)
+
+    # Try loading packages, else install
+    message("Loading packages...")
+    if (!require("context")) devtools::install_github("dide-tools/ids")
+    if (!require("didewin")) devtools::install_github("dide-tools/ids")
+    if (!require("ids"))     devtools::install_github("richfitz/ids")
+    if (!require("queuer"))  devtools::install_github("richfitz/ids")
+    if (!require("syncr")) {
+        install.packages("syncr",
+            repos = c(
+                CRAN = "https://cran.rstudio.com",
+                drat = "https://richfitz.github.io/drat"
+            )
+        )
+    }
+
+    # global config
+    didewin::didewin_config_global(credentials = "jjo11",
+                                   cluster = "fi--didemrchnb",
+                                   workdir = remotewd)
+
+    # test login (spawns XQuartz login window) - alternative?
+    message("Attempting web login, password required...")
+    didewin::web_login()
+
+    # create a root (this should make a root dir 'contexts')
+    root <- file.path(remotewd, "contexts")
+
+    # name the package I need
+    packages <- c("cascade", "CascadeDashboard", "devtools")
+
+    # containing function definitions (bit hacky but okay)
+    sources <- c("initial.R", "test.R")
+
+    # save sources and packages as a 'context'
+    # Running the below, creates the 'contexts' dir on network share
+    # package_sources is for custom packages
+    ctx <- context::context_save(
+        root = root,
+        packages = packages,
+        package_sources = context::package_sources(
+            github = c("jackolney/CascadeDashboard", "jackolney/cascade")
+        ),
+        sources = sources
     )
-)
 
-# Add 'syncr' for 'Running out of place'
-install.packages("syncr",
-    repos = c(
-        CRAN = "https://cran.rstudio.com",
-        drat = "https://richfitz.github.io/drat"
-    )
-)
+    # log log log
+    if (log) context::context_log_start()
 
-# Supply a working directory to remote network share
-workdir <- "/Volumes/jjo11/clustr"
+    # build a queue (global)
+    message("Building queue...")
+    obj <<- didewin::queue_didewin(ctx)
 
-# global config
-didewin::didewin_config_global(credentials = "jjo11",
-                               cluster = "fi--didemrchnb",
-                               workdir = workdir)
+    # check network sync
+    message("Syncing")
+    obj$sync_files()
 
-didewin::web_login()
-
-# create a root (this should make a root dir 'contexts')
-root <- file.path(workdir, "contexts")
-
-# name the package I need (GH)
-packages <- c("cascade", "CascadeDashboard", "devtools")
-
-# containing function definitions -> point to relevant function definitions?
-sources <- c("initial.R", "test.R")
-
-# save sources and packages as a 'context'
-# Running the below, creates the 'contexts' dir on network share
-ctx <- context::context_save(
-    root = root,
-    packages = packages,
-    package_sources = context::package_sources(github =
-        c("jackolney/CascadeDashboard", "jackolney/cascade")
-    ),
-    sources = sources
-)
-
-# Start logging (so we can see what is going on)
-context::context_log_start()
-
-# build a queue
-obj <- didewin::queue_didewin(ctx)
-
-# check network sync
-obj$sync_files()
-
-# RUN FUNCTIONS
-# add to queue
-t <- obj$enqueue(GetMasterDataSet("Kenya"))
-
-# wait...
-t$wait(2)
-
-# check result
-t$result()
-
-# get task status
-t$status()
-
-# check how long things took
-t$times()
-
-# view log
-t$log()
-
-# view 'dide' logging info
-obj$dide_log(t)
-
-# TEST CALIBRATION
-# add to queue
-test <- obj$enqueue(test_calibration())
-
-# get task status
-test$status()
-
-# check result
-test$result()
-
-# check how long things took
-test$times()
-
-# view log
-test$log()
-
+    message("Complete")
+}
