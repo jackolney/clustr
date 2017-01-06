@@ -3,7 +3,11 @@
 # start setup process
 source("~/git/clustr/setup.R")
 
-setup()
+login()
+
+logout()
+
+
 
 
 # create a root (this should make a root dir 'contexts')

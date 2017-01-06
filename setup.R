@@ -2,8 +2,8 @@
 
 ## setup definition
 # function sets up everything automatically
-setup <- function(cwd = "~/git/clustr",
-                  remotewd = "/Volumes/jjo11/clustr",
+login <- function(cwd = "~/git/clustr",
+                  remotewd = "/tmp/jjo11/clustr",
                   cluster = "fi--didemrchnb",
                   log = TRUE) {
 
@@ -24,6 +24,9 @@ setup <- function(cwd = "~/git/clustr",
             )
         )
     }
+
+    # mount network share
+    mount()
 
     # global config
     didewin::didewin_config_global(credentials = "jjo11",
@@ -67,4 +70,17 @@ setup <- function(cwd = "~/git/clustr",
     obj$sync_files()
 
     message("Complete")
+}
+
+# mount network share in tmp directory
+mount <- function() {
+    system("mkdir -p /tmp/jjo11")
+    if (!dir.exists("/tmp/jjo11/clustr")) {
+        system("mount -t smbfs //jjo11@fi--san02.dide.ic.ac.uk/homes/jjo11 /tmp/jjo11")
+    }
+}
+
+# umount network share
+logout <- function() {
+    system("umount /tmp/jjo11")
 }
