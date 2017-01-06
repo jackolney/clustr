@@ -1,62 +1,72 @@
-# dide-tools didewin setup
+################################################################################
 
-# start setup process
+# Project Plan
+
+# >> We should be aiming to do the easy stuff locally and then pass the hard stuff to the cluster
+# >> Then return a whole bunch of objects
+# >> write new version of RunNSCalibration() function for example
+# >> return a LIST of the objects that it creates globally
+# >> then we can access and manipulate them later
+# >> implement slackr or something to notify me of jobs finishing
+# >> then we can do all the quartz plotting and table shit locally
+
+################################################################################
+# dide-tools didewin setup
+# demo workflow
+
+# source master functions
 source("~/git/clustr/setup.R")
 
+# mount / login to cluster
 login()
 
+
+setwd("~/git/CascadeDashboard/inst/app")
+
+MasterName <- "Zimbabwe"
+MasterData <- GetMasterDataSet(MasterName)
+
+# ---- #
+set.seed(100)
+# ---- #
+
+MaxError <- 2
+MinNumber <- 100
+
+# Define Parameter Range
+# function can now be edited
+# e.g. DefineParmRange(p = c(0, 1))
+# parRange <- DefineParmRange()
+
+# parRange <- DefineParmRange(p = c(0.86, 1), omega = c(0, 0.01))
+parRange <- DefineParmRange(p = c(0.7, 1), omega = c(0, 0.01))
+
+# Run Calibration
+t <- obj$enqueue(
+    RunClusterCalibration(
+        country = MasterName,
+        data = MasterData,
+        maxIterations = 1e4,
+        maxError = MaxError,
+        limit = MinNumber,
+        parRange = parRange,
+        targetIterations = 1e5)
+)
+
+t$wait(10)
+
+out <- t$result()
+
+t$log()
+
+hist(out$runError)
+
+
+# dismount / logout of cluster
 logout()
 
 
 
-
-# create a root (this should make a root dir 'contexts')
-root <- file.path(workdir, "contexts")
-
-# name the package I need (GH)
-packages <- c("cascade", "CascadeDashboard", "devtools")
-
-# containing function definitions -> point to relevant function definitions?
-sources <- c("initial.R", "test.R")
-
-# save sources and packages as a 'context'
-# Running the below, creates the 'contexts' dir on network share
-ctx <- context::context_save(
-    root = root,
-    packages = packages,
-    package_sources = context::package_sources(github =
-        c("jackolney/CascadeDashboard", "jackolney/cascade")
-    ),
-    sources = sources
-)
-
-# Start logging (so we can see what is going on)
-context::context_log_start()
-
-# build a queue
-obj <- didewin::queue_didewin(ctx)
-
-# check network sync
-obj$sync_files()
-
-# RUN FUNCTIONS
-# add to queue
-t <- obj$enqueue(GetMasterDataSet("Kenya"))
-
-# wait...
-t$wait(2)
-
-# check result
-t$result()
-
-# get task status
-t$status()
-
-# check how long things took
-t$times()
-
-# view log
-t$log()
 
 # view 'dide' logging info
 obj$dide_log(t)
@@ -76,4 +86,6 @@ test$times()
 
 # view log
 test$log()
+
+
 

@@ -44,7 +44,7 @@ login <- function(cwd = "~/git/clustr",
     packages <- c("cascade", "CascadeDashboard", "devtools")
 
     # containing function definitions (bit hacky but okay)
-    sources <- c("initial.R", "test.R")
+    sources <- c("initial.R", "test.R", "functions.R")
 
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share
