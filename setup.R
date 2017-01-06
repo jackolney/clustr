@@ -12,10 +12,10 @@ login <- function(cwd = "~/git/clustr",
 
     # Try loading packages, else install
     message("Loading packages...")
-    if (!require("context")) devtools::install_github("dide-tools/ids")
-    if (!require("didewin")) devtools::install_github("dide-tools/ids")
+    if (!require("context")) devtools::install_github("dide-tools/context")
+    if (!require("didewin")) devtools::install_github("dide-tools/didewin")
     if (!require("ids"))     devtools::install_github("richfitz/ids")
-    if (!require("queuer"))  devtools::install_github("richfitz/ids")
+    if (!require("queuer"))  devtools::install_github("richfitz/queuer")
     if (!require("syncr")) {
         install.packages("syncr",
             repos = c(
