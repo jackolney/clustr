@@ -76,11 +76,11 @@ login <- function(cwd = "~/git/clustr",
 mount <- function() {
     system("mkdir -p /tmp/jjo11")
     if (!dir.exists("/tmp/jjo11/clustr")) {
-        system("mount -t smbfs //jjo11@fi--san02.dide.ic.ac.uk/homes/jjo11 /tmp/jjo11")
+        system("mount -t smbfs //jjo11@fi--san02.dide.ic.ac.uk/homes/jjo11 /tmp/jjo11", wait = TRUE)
     }
 }
 
 # umount network share
 logout <- function() {
-    system("umount /tmp/jjo11")
+    system("umount /tmp/jjo11", wait = TRUE)
 }

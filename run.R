@@ -17,6 +17,10 @@
 # source master functions
 source("~/git/clustr/setup.R")
 
+# if at home, connect to the vpn
+'vpn-connect'
+'vpn-disconnect'
+
 # mount / login to cluster
 login()
 
@@ -61,6 +65,9 @@ t$log()
 
 hist(out$runError)
 
+t$status()
+t$times()
+# obj$sync_files()
 
 # dismount / logout of cluster
 logout()
@@ -87,5 +94,43 @@ test$times()
 # view log
 test$log()
 
+################################################################################
+# Thoughts on how to improve this
 
+# Either, I go 'full cluster' in other words, I push a master file to the cluster
+# And this spawns all the countries and simulations that I want, sets things up
+# submits the jobs to the cluster, and saves the final image.
 
+# - Generating plots on the cluster is not advisable as we get all screwy with
+# font libraries and other shit from Windows.
+
+# The alternative is to run these entirely locally but then farm out the hard
+# stuff to the cluster.
+
+# The disadvantage of this is the it makes everything a bit single-threaded.
+
+# Perhaps I can find a middle ground whereby I can farm out the hard stuff to
+# the cluster in one go...
+
+# 1. Calibration
+# 2. Projection
+# 3. Optimisation
+
+# So, three big loops that go over all countries etc.
+
+# Need a map that links cluster jobs to actual names
+
+obj$tasks_list()
+
+# This looks like a MASSIVE list of ALLL jobs.
+
+# Can I clear this out?
+
+obj$id()
+
+test <- obj$task_get("bb98ae62682344c9aea754f355b52513")
+
+head(test$result())
+
+sizes <- 3:8
+grp <- queuer::qlapply(sizes, make_tree, obj, timeout=0)
