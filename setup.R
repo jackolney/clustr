@@ -80,6 +80,11 @@ mount <- function() {
     }
 }
 
+# open remote directory in finder
+open_remote <- function() {
+    if (dir.exists("/tmp/jjo11/clustr")) system("open /tmp/jjo11/clustr")
+}
+
 # umount network share
 logout <- function() {
     system("umount /tmp/jjo11", wait = TRUE)

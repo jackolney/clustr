@@ -15,6 +15,7 @@
 # demo workflow
 
 # source master functions
+require(RColorBrewer)
 source("~/git/clustr/setup.R")
 
 # if at home, connect to the vpn
@@ -23,6 +24,9 @@ source("~/git/clustr/setup.R")
 
 # mount / login to cluster
 login()
+
+# ---------------------------------------------------------------------------- #
+# A test task
 
 
 setwd("~/git/CascadeDashboard/inst/app")
@@ -63,11 +67,15 @@ out <- t$result()
 
 t$log()
 
+t$id
+
 hist(out$runError)
 
 t$status()
 t$times()
 # obj$sync_files()
+
+
 
 # dismount / logout of cluster
 logout()
@@ -119,6 +127,78 @@ test$log()
 # So, three big loops that go over all countries etc.
 
 # Need a map that links cluster jobs to actual names
+
+# Where are objects held?
+# How big are they?
+# Setting seeds does not translate... workaround?
+
+################################################################################
+## Dev area
+
+# Three global functions that take minimal inputs
+# Return cluster ID's for jobs submitted to the cluster.
+
+## Calibration
+# PushClusterCalibration()
+# then with task_id we can generate plots
+
+source("~/git/clustr/local/calibration.R")
+source("~/git/clustr/local/projection.R")
+source("~/git/clustr/local/optimisation.R")
+
+
+setwd("~/git/CascadeDashboard/inst/app")
+
+set.seed(100)
+MaxError <- 2
+MinNumber <- 100
+
+job <- PushClusterCalibration("Zimbabwe", MaxError, MinNumber)
+job$status()
+job$result()
+
+# strip calibration results from object
+for(i in 1:length(job$result())) assign(names(job$result())[i], job$result()[[i]])
+
+CalibrationPlots(wd = "~/git/clustr", countryName = "Zimbabwe")
+
+ProjectionPlots(wd = "~/git/clustr", countryName = "Zimbabwe")
+
+job2 <- PushClusterOptimisation()
+job2$status()
+job2$result()
+
+
+# Can we submit the calibration to the cluster and then the optimisation?
+# Then, bring it all back locally so that we can generate figures?
+
+
+# eventual aim is a single function to spawn everything
+RunCascade <- function(country = "Zimbabwe") {
+    # do some calibration
+    # do some projection
+    # do some optimisation
+}
+
+login
+
+
+# At what point will Rich tell me to put this in a package?
+
+clustr::run("Zimbabwe")
+
+
+
+
+
+
+## Projection
+# PushClusterProjection()
+# then with calibration and projection results we can generate plots
+
+## Optimisation
+# PushClusterOptimisation()
+# then with calibration, projection and optimisation results we can generate plots
 
 obj$tasks_list()
 
