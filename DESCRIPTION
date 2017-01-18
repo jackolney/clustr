@@ -1,0 +1,22 @@
+Package: clustr
+Title: DIDE Cluster Support for CascadeDashboard
+Version: 0.0.1
+Author: Jack Olney
+Maintainer: Jack Olney <jack.olney11@imperial.ac.uk>
+Description: Package to facilitate use of the DIDE cluster and the didewin toolkit developed by Rich for use with the CascadeDashboard package developed by myself.
+Depends:
+    R (>= 3.3.1)
+Imports:
+    FME,
+    syncr,
+    devtools
+Remotes:
+    jackolney/CascadeDashboard,
+    dide-tools/context,
+    dide-tools/didewin,
+    richfitz/ids,
+    richfitz/queuer,
+License: MIT
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
