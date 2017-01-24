@@ -7,9 +7,14 @@ Description: Package to facilitate use of the DIDE cluster and the didewin toolk
 Depends:
     R (>= 3.3.1)
 Imports:
+    CascadeDashboard,
+    context,
+    devtools,
+    didewin,
     FME,
+    ids,
+    queuer,
     syncr,
-    devtools
 Remotes:
     jackolney/CascadeDashboard,
     dide-tools/context,

@@ -1,7 +1,14 @@
-# dide-tools didewin setup
-
-## setup definition
-# function sets up everything automatically
+#' Login to DIDE cluster
+#'
+#' @param cwd set current working directory
+#'
+#' @param remotewd remote directory on network share
+#'
+#' @param cluster select cluster 'fi--didemrchnb' or 'fi--dideclusthn'
+#'
+#' @param log boolean to set logging
+#'
+#' @export
 login <- function(cwd = "~/git/clustr",
                   remotewd = "/tmp/jjo11/clustr",
                   cluster = "fi--didemrchnb",
@@ -72,7 +79,9 @@ login <- function(cwd = "~/git/clustr",
     message("Complete")
 }
 
-# mount network share in tmp directory
+#' Mount network share on local machine (only works for jjo11 currently)
+#'
+#' @export
 mount <- function() {
     system("mkdir -p /tmp/jjo11")
     if (!dir.exists("/tmp/jjo11/clustr")) {
@@ -80,12 +89,16 @@ mount <- function() {
     }
 }
 
-# open remote directory in finder
+#' System call to open network share directory
+#'
+#' @export
 open_remote <- function() {
     if (dir.exists("/tmp/jjo11/clustr")) system("open /tmp/jjo11/clustr")
 }
 
-# umount network share
+#' Logout and unmount network share
+#'
+#' @export
 logout <- function() {
     system("umount /tmp/jjo11", wait = TRUE)
 }

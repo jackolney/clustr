@@ -1,3 +1,6 @@
+#' Push optimisation directly to cluster [DEVELOPMENT]
+#'
+#' @export
 PushClusterOptimisation <- function() {
     # setup
 

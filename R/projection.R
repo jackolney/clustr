@@ -1,3 +1,10 @@
+#' Generate plots following model projection
+#'
+#' @param wd working directory
+#'
+#' @param countryName string defining country name
+#'
+#' @export
 ProjectionPlots <- function(wd, countryName) {
 
     # create output directly
