@@ -16,11 +16,13 @@
 
 # source master functions
 require(RColorBrewer)
-source("~/git/clustr/setup.R")
+# source("~/git/clustr/R/setup.R")
+setwd("~/git/clustr/")
+devtools::load_all()
 
 # if at home, connect to the vpn
-'vpn-connect'
-'vpn-disconnect'
+# 'vpn-connect'
+# 'vpn-disconnect'
 
 # mount / login to cluster
 login()

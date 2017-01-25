@@ -48,10 +48,16 @@ login <- function(cwd = "~/git/clustr",
     root <- file.path(remotewd, "contexts")
 
     # name the package I need
-    packages <- c("cascade", "CascadeDashboard", "devtools")
+    packages <- c("cascade", "CascadeDashboard", "devtools", "clustr")
 
     # containing function definitions (bit hacky but okay)
-    sources <- c("initial.R", "test.R", "functions.R")
+    sources <- c(
+        "inst/initial.R",
+        "inst/test.R",
+        "R/calibration.R",
+        "R/projection.R",
+        "R/optimisation.R"
+    )
 
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share
@@ -60,7 +66,7 @@ login <- function(cwd = "~/git/clustr",
         root = root,
         packages = packages,
         package_sources = context::package_sources(
-            github = c("jackolney/CascadeDashboard", "jackolney/cascade")
+            github = c("jackolney/CascadeDashboard", "jackolney/cascade", "jackolney/clustr")
         ),
         sources = sources
     )
