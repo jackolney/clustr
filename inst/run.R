@@ -52,6 +52,8 @@ MinNumber <- 100
 parRange <- DefineParmRange(p = c(0.7, 1), omega = c(0, 0.01))
 
 # Run Calibration
+obj <- clustr::login(cluster = "fi--dideclusthn")
+
 t <- obj$enqueue(
     RunClusterCalibration(
         country = MasterName,
@@ -64,11 +66,8 @@ t <- obj$enqueue(
 )
 
 
-# Alternate 'small' cluster login
-obj <- clustr::login(cluster = "fi--dideclusthn")
 
-# test function
-t <- obj$enqueue(cluster_test())
+
 
 # :disappointed:
 # If I pass a function that only the CLUSTER knows... then it throws an error
