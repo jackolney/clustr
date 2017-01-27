@@ -36,9 +36,14 @@ login <- function(cwd = "~/git/clustr",
     mount()
 
     # global config
-    didewin::didewin_config_global(credentials = "jjo11",
-                                   cluster = "fi--didemrchnb",
+    # perhaps include a check for presence of '~/.smbcredentials'
+    if (file.exists("~/.smbcredentials")) {
+        didewin::didewin_config_global(credentials = "~/.smbcredentials",
+                                   cluster = cluster,
                                    workdir = remotewd)
+    } else {
+        didewin::didewin_config_global(cluster = cluster, workdir = remotewd)
+    }
 
     # test login (spawns XQuartz login window) - alternative?
     message("Attempting web login, password required...")
@@ -48,16 +53,17 @@ login <- function(cwd = "~/git/clustr",
     root <- file.path(remotewd, "contexts")
 
     # name the package I need
-    packages <- c("cascade", "CascadeDashboard", "devtools", "clustr")
+    packages <- c("cascade", "CascadeDashboard", "devtools")
 
     # containing function definitions (bit hacky but okay)
-    sources <- c(
-        "inst/initial.R",
-        "inst/test.R",
-        "R/calibration.R",
-        "R/projection.R",
-        "R/optimisation.R"
-    )
+    # sources <- c(
+    #     "inst/initial.R",
+    #     "inst/test.R",
+    #     "R/calibration.R",
+    #     "R/projection.R",
+    #     "R/optimisation.R"
+    # )
+    sources <- NULL
 
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share
@@ -66,7 +72,7 @@ login <- function(cwd = "~/git/clustr",
         root = root,
         packages = packages,
         package_sources = context::package_sources(
-            github = c("jackolney/CascadeDashboard", "jackolney/cascade", "jackolney/clustr")
+            github = c("jackolney/CascadeDashboard@zimbabwe", "jackolney/cascade")
         ),
         sources = sources
     )
@@ -76,35 +82,12 @@ login <- function(cwd = "~/git/clustr",
 
     # build a queue (global)
     message("Building queue...")
-    obj <<- didewin::queue_didewin(ctx)
+    obj <- didewin::queue_didewin(ctx)
 
     # check network sync
     message("Syncing")
     obj$sync_files()
 
     message("Complete")
-}
-
-#' Mount network share on local machine (only works for jjo11 currently)
-#'
-#' @export
-mount <- function() {
-    system("mkdir -p /tmp/jjo11")
-    if (!dir.exists("/tmp/jjo11/clustr")) {
-        system("mount -t smbfs //jjo11@fi--san02.dide.ic.ac.uk/homes/jjo11 /tmp/jjo11", wait = TRUE)
-    }
-}
-
-#' System call to open network share directory
-#'
-#' @export
-open_remote <- function() {
-    if (dir.exists("/tmp/jjo11/clustr")) system("open /tmp/jjo11/clustr")
-}
-
-#' Logout and unmount network share
-#'
-#' @export
-logout <- function() {
-    system("umount /tmp/jjo11", wait = TRUE)
+    obj
 }

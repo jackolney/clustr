@@ -63,7 +63,25 @@ t <- obj$enqueue(
         targetIterations = 1e5)
 )
 
-t$wait(10)
+
+# Alternate 'small' cluster login
+obj <- clustr::login(cluster = "fi--dideclusthn")
+
+# test function
+t <- obj$enqueue(cluster_test())
+
+# :disappointed:
+# If I pass a function that only the CLUSTER knows... then it throws an error
+# I guess to avoid, only pass functions that BOTH know
+job <- clustr::submit(q = obj, x = cluster_test())
+
+t$status()
+obj$dide_log(t)
+t$log()
+
+# check cluster_load()
+obj$cluster_load()
+
 
 out <- t$result()
 
