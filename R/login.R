@@ -68,6 +68,7 @@ login <- function(cwd = "~/git/clustr",
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share
     # package_sources is for custom packages
+    message("Context setting up remote network share...")
     ctx <- context::context_save(
         root = root,
         packages = packages,
