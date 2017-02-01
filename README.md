@@ -7,10 +7,6 @@ Relies heavily on [Rich's](https://github.com/richfitz) [didewin](https://github
 This is really for internal use and will not be that useful to anyone else.
 
 
----
-
-#### Use
-
 ```R
 
 ## login to cluster (as me currently)
@@ -20,6 +16,13 @@ This is really for internal use and will not be that useful to anyone else.
 # cluster = select cluster 'fi--didemrchnb' or 'fi--dideclusthn'
 # log = boolean to set logging
 clustr::login()
+
+## mount network share
+# function called by login()
+clustr::mount()
+
+## open mounted network share
+clustr::open_remote()
 
 ## umount network share
 clustr::logout()
