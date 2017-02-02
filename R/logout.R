@@ -1,6 +1,8 @@
 #' Logout and unmount network share
 #'
+#' @param username DIDE username
+#'
 #' @export
-logout <- function() {
-    system("umount /tmp/jjo11", wait = TRUE)
+logout <- function(username) {
+    system(paste0("umount /tmp/", username), wait = TRUE)
 }

@@ -4,7 +4,12 @@
 \alias{mount}
 \title{Mount network share on local machine (only works for jjo11 currently)}
 \usage{
-mount()
+mount(username, remotewd)
+}
+\arguments{
+\item{username}{DIDE username}
+
+\item{remotewd}{remote directory on network share (don't require entire path)}
 }
 \description{
 Mount network share on local machine (only works for jjo11 currently)

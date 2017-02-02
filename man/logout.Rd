@@ -4,7 +4,10 @@
 \alias{logout}
 \title{Logout and unmount network share}
 \usage{
-logout()
+logout(username)
+}
+\arguments{
+\item{username}{DIDE username}
 }
 \description{
 Logout and unmount network share

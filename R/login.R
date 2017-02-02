@@ -1,21 +1,24 @@
 #' Login to DIDE cluster
 #'
-#' @param cwd set current working directory
+#' @param username DIDE username
 #'
-#' @param remotewd remote directory on network share
+#' @param remotewd remote directory on network share (don't require entire path)
 #'
-#' @param cluster select cluster 'fi--didemrchnb' or 'fi--dideclusthn'
+#' @param sources vector of required sources
+#'
+#' @param packages vector of required packages
+#'
+#' @param cluster either "MRC" or "DIDE"
 #'
 #' @param log boolean to set logging
 #'
 #' @export
-login <- function(cwd = "~/git/clustr",
-                  remotewd = "/tmp/jjo11/clustr",
-                  cluster = "fi--didemrchnb",
+login <- function(username = "jjo11",
+                  remotewd = "clustr",
+                  sources = NULL,
+                  packages = c("cascade", "CascadeDashboard", "devtools"),
+                  cluster = "MRC",
                   log = TRUE) {
-
-    # define a working directory
-    setwd(cwd)
 
     # Try loading packages, else install
     message("Loading packages...")
@@ -33,16 +36,27 @@ login <- function(cwd = "~/git/clustr",
     }
 
     # mount network share
-    mount()
+    clustr::mount(username, remotewd)
+
+    # configure correct cluster
+    if (cluster == "MRC") {
+        cluster <- "fi--didemrchnb"
+    } else if (cluster == "DIDE") {
+        cluster <- "fi--dideclusthn"
+    } else {
+        warning("Cluster name not recognised, defaulting to DIDE cluster")
+        cluster <- "fi--dideclusthn"
+    }
 
     # global config
     # perhaps include a check for presence of '~/.smbcredentials'
     if (file.exists("~/.smbcredentials")) {
         didewin::didewin_config_global(credentials = "~/.smbcredentials",
                                    cluster = cluster,
-                                   workdir = remotewd)
+                                   workdir = file.path("/tmp", username, remotewd))
     } else {
-        didewin::didewin_config_global(cluster = cluster, workdir = remotewd)
+        didewin::didewin_config_global(cluster = cluster, workdir = file.path("/tmp", username,
+           remotewd))
     }
 
     # test login (spawns XQuartz login window) - alternative?
@@ -50,20 +64,7 @@ login <- function(cwd = "~/git/clustr",
     didewin::web_login()
 
     # create a root (this should make a root dir 'contexts')
-    root <- file.path(remotewd, "contexts")
-
-    # name the package I need
-    packages <- c("cascade", "CascadeDashboard", "devtools")
-
-    # containing function definitions (bit hacky but okay)
-    # sources <- c(
-    #     "inst/initial.R",
-    #     "inst/test.R",
-    #     "R/calibration.R",
-    #     "R/projection.R",
-    #     "R/optimisation.R"
-    # )
-    sources <- NULL
+    root <- file.path("/tmp", username, remotewd, "contexts")
 
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share

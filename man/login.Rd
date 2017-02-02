@@ -4,15 +4,20 @@
 \alias{login}
 \title{Login to DIDE cluster}
 \usage{
-login(cwd = "~/git/clustr", remotewd = "/tmp/jjo11/clustr",
-  cluster = "fi--didemrchnb", log = TRUE)
+login(username = "jjo11", remotewd = "clustr", sources = NULL,
+  packages = c("cascade", "CascadeDashboard", "devtools"), cluster = "MRC",
+  log = TRUE)
 }
 \arguments{
-\item{cwd}{set current working directory}
+\item{username}{DIDE username}
 
-\item{remotewd}{remote directory on network share}
+\item{remotewd}{remote directory on network share (don't require entire path)}
 
-\item{cluster}{select cluster 'fi--didemrchnb' or 'fi--dideclusthn'}
+\item{sources}{vector of required sources}
+
+\item{packages}{vector of required packages}
+
+\item{cluster}{either "MRC" or "DIDE"}
 
 \item{log}{boolean to set logging}
 }

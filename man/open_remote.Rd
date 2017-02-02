@@ -4,7 +4,12 @@
 \alias{open_remote}
 \title{System call to open network share directory}
 \usage{
-open_remote()
+open_remote(username, remotewd)
+}
+\arguments{
+\item{username}{DIDE username}
+
+\item{remotewd}{remote directory on network share (don't require entire path)}
 }
 \description{
 System call to open network share directory

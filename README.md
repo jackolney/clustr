@@ -9,27 +9,26 @@ This is really for internal use and will not be that useful to anyone else.
 
 ```R
 
-## login to cluster (as me currently)
-# args:
-# cwd = set current working directory
-# remotewd = remote directory on network share
-# cluster = select cluster 'fi--didemrchnb' or 'fi--dideclusthn'
-# log = boolean to set logging
-clustr::login()
+## login to cluster (didewin config and login)
+clustr::login(username = "dide_username",
+              remotewd = "directory_on_network_share",
+              sources = c("source_files.R"),
+              packages = c("devtools", "other_package_name"),
+              cluster = "MRC",
+              log = TRUE)
 
 ## mount network share
-# function called by login()
-clustr::mount()
+clustr::mount(username, remotewd)
 
 ## open mounted network share
-clustr::open_remote()
+clustr::open_remote(username, remotewd)
 
 ## umount network share
-clustr::logout()
+clustr::logout(username)
 
 ## submit job to cluster
 # wrapper around obj$enqueue()
 # still in development
-clustr::submit()
+clustr::submit(obj, x)
 
 ```
