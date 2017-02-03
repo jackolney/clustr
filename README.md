@@ -1,8 +1,8 @@
 ### clustr
 
-A place to store scripts for automating [CascadeDashboard](https://github.com/jackolney/CascadeDashboard) using the MRC cluster.
+A place to store scripts for automating access to the DIDE cluster.
 
-Relies heavily on [Rich's](https://github.com/richfitz) [didewin](https://github.com/dide-tools/didewin) tools!
+Works as a wrapper around [Rich's](https://github.com/richfitz) great [didewin](https://github.com/dide-tools/didewin) tools!
 
 This is really for internal use and will not be that useful to anyone else.
 
