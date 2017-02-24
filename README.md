@@ -10,10 +10,12 @@ This is really for internal use and will not be that useful to anyone else.
 ```R
 
 ## login to cluster (didewin config and login)
+# packages argument now accepts GitHub package paths and can distinguish between CRAN / GitHub
+# Caution: not functional for anything other than CRAN and GitHub packages
 clustr::login(username = "dide_username",
               remotewd = "directory_on_network_share",
               sources = c("source_files.R"),
-              packages = c("devtools", "other_package_name"),
+              packages = c("devtools", "github_username/package"),
               cluster = "MRC",
               log = TRUE)
 

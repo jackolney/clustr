@@ -6,7 +6,8 @@
 #'
 #' @param sources vector of required sources
 #'
-#' @param packages vector of required packages
+#' @param packages vector of required packages. Just state the name of packages to be sourced from
+#' CRAN, while for packages from GitHub state the username and package e.g. 'hadley/ggplot2'
 #'
 #' @param cluster either "MRC" or "DIDE"
 #'
@@ -16,7 +17,7 @@
 login <- function(username = "jjo11",
                   remotewd = "clustr",
                   sources = NULL,
-                  packages = c("cascade", "CascadeDashboard", "devtools"),
+                  packages = c("jackolney/cascade", "jackolney/CascadeDashboard", "devtools"),
                   cluster = "MRC",
                   log = TRUE) {
 
@@ -69,13 +70,16 @@ login <- function(username = "jjo11",
     # save sources and packages as a 'context'
     # Running the below, creates the 'contexts' dir on network share
     # package_sources is for custom packages
+    # now check for package location based upon presence of '/'
+    slash <- "/"
+    github_packages <- packages[which(grepl(slash, packages))]
+    cran_packages <- packages[which(!grepl(slash, packages))]
+
     message("Context setting up remote network share...")
     ctx <- context::context_save(
         root = root,
-        packages = packages,
-        package_sources = context::package_sources(
-            github = c("jackolney/CascadeDashboard@zimbabwe", "jackolney/cascade")
-        ),
+        packages = cran_packages,
+        package_sources = context::package_sources(github = github_packages),
         sources = sources
     )
 

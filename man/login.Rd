@@ -5,8 +5,8 @@
 \title{Login to DIDE cluster}
 \usage{
 login(username = "jjo11", remotewd = "clustr", sources = NULL,
-  packages = c("cascade", "CascadeDashboard", "devtools"), cluster = "MRC",
-  log = TRUE)
+  packages = c("jackolney/cascade", "jackolney/CascadeDashboard", "devtools"),
+  cluster = "MRC", log = TRUE)
 }
 \arguments{
 \item{username}{DIDE username}
@@ -15,7 +15,8 @@ login(username = "jjo11", remotewd = "clustr", sources = NULL,
 
 \item{sources}{vector of required sources}
 
-\item{packages}{vector of required packages}
+\item{packages}{vector of required packages. Just state the name of packages to be sourced from
+CRAN, while for packages from GitHub state the username and package e.g. 'hadley/ggplot2'}
 
 \item{cluster}{either "MRC" or "DIDE"}
 
