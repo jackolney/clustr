@@ -1,6 +1,6 @@
 Package: clustr
 Title: DIDE Cluster Support for CascadeDashboard
-Version: 0.0.1
+Version: 1.0
 Author: Jack Olney
 Maintainer: Jack Olney <jack.olney11@imperial.ac.uk>
 Description: Package to facilitate use of the DIDE cluster and the didewin toolkit developed by Rich for use with the CascadeDashboard package developed by myself.
