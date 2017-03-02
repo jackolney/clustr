@@ -71,14 +71,16 @@ login <- function(username = "jjo11",
     # Running the below, creates the 'contexts' dir on network share
     # package_sources is for custom packages
     # now check for package location based upon presence of '/'
+    # package_names contains only names (all after '/')
     slash <- "/"
     github_packages <- packages[which(grepl(slash, packages))]
-    cran_packages <- packages[which(!grepl(slash, packages))]
+    package_names <- c(packages[which(!grepl(slash, packages))],
+        gsub(pattern = ".*/", replacement = "", x = github_packages))
 
     message("Context setting up remote network share...")
     ctx <- context::context_save(
         root = root,
-        packages = cran_packages,
+        packages = package_names,
         package_sources = context::package_sources(github = github_packages),
         sources = sources
     )
